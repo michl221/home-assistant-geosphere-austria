@@ -1,0 +1,19 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Service is already configured"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "zone": "Zone"
+                },
+                "description": "The location to use for weather forecasting",
+                "data_description":
+                {
+                    "zone": "Zone"
+                }
+            }
+        }
+    }
+}

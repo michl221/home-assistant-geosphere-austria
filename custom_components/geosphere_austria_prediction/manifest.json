@@ -1,0 +1,13 @@
+{
+  "domain": "geosphere_austria_prediction",
+  "name": "GeoSphere Austria Prediction",
+  "codeowners": [
+    "@michl221"
+  ],
+  "config_flow": true,
+  "dependencies": ["zone"],
+  "documentation": "https://www.home-assistant.io/integrations/geosphere_austria_prediction",
+  "iot_class": "cloud_polling",
+  "quality_scale": "bronze",
+  "requirements": ["pydantic==2.11.7"]
+}
