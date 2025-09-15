@@ -8,7 +8,7 @@ on:
 
 jobs:
   validate:
-    runs_on: "ubuntu-latest"
+    runs-on: "ubuntu-latest"
     steps:
       - uses: "actions/checkout@v4"
       - uses: home-assistant/actions/hassfest@master
