@@ -1,5 +1,6 @@
 pydantic==2.11.7
 
-pytest==8.4.2
-pytest-cov==7.0.0
+coverage
+pytest
+pytest-cov
 pytest-homeassistant-custom-component==0.13.280
