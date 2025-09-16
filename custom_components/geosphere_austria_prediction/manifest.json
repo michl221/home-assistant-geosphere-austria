@@ -10,5 +10,6 @@
   "iot_class": "cloud_polling",
   "quality_scale": "bronze",
   "requirements": ["pydantic==2.11.7"],
-  "version": "v0.1.0"
+  "version": "v0.1.1"
+
 }

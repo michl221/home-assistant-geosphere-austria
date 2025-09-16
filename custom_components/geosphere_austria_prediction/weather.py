@@ -2,24 +2,21 @@
 
 from __future__ import annotations
 
-from datetime import datetime, time
 import math
+from datetime import datetime, time
 
 from homeassistant.components.weather import (
-    ATTR_FORECAST_CONDITION,
-    ATTR_FORECAST_NATIVE_PRECIPITATION,
-    ATTR_FORECAST_NATIVE_TEMP,
-    ATTR_FORECAST_NATIVE_TEMP_LOW,
-    ATTR_FORECAST_NATIVE_WIND_SPEED,
-    ATTR_FORECAST_WIND_BEARING,
-    Forecast,
-    SingleCoordinatorWeatherEntity,
-    WeatherEntityFeature,
-)
-from homeassistant.const import UnitOfPrecipitationDepth, UnitOfSpeed, UnitOfTemperature
+    ATTR_FORECAST_CONDITION, ATTR_FORECAST_NATIVE_PRECIPITATION,
+    ATTR_FORECAST_NATIVE_TEMP, ATTR_FORECAST_NATIVE_TEMP_LOW,
+    ATTR_FORECAST_NATIVE_WIND_SPEED, ATTR_FORECAST_PRESSURE,
+    ATTR_FORECAST_WIND_BEARING, Forecast, SingleCoordinatorWeatherEntity,
+    WeatherEntityFeature)
+from homeassistant.const import (UnitOfPrecipitationDepth, UnitOfPressure,
+                                 UnitOfSpeed, UnitOfTemperature)
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
-from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
+from homeassistant.helpers.entity_platform import \
+    AddConfigEntryEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.util import dt as dt_util
 
@@ -51,6 +48,7 @@ class GeoSphereAustriaPredictionWeatherEntity(
     _attr_native_temperature_unit = UnitOfTemperature.CELSIUS
     _attr_native_wind_speed_unit = UnitOfSpeed.METERS_PER_SECOND
     _attr_supported_features = WeatherEntityFeature.FORECAST_HOURLY
+    _attr_native_pressure_unit = UnitOfPressure.HPA
 
     def __init__(
         self,
@@ -95,6 +93,13 @@ class GeoSphereAustriaPredictionWeatherEntity(
             math.pow(self.coordinator.data.windspeed_eastward[0], 2)
             + math.pow(self.coordinator.data.windspeed_northward[0], 2)
         )
+
+    @property
+    def native_pressure(self) -> float | None:
+        """Return the surface presssure."""
+        if not self.coordinator.data.surface_pressure:
+            return None
+        return self.coordinator.data.surface_pressure[0] / 100
 
     # @property
     # def wind_bearing(self) -> float | str | None:
@@ -153,6 +158,9 @@ class GeoSphereAustriaPredictionWeatherEntity(
                     math.pow(hourly.windspeed_eastward[index], 2)
                     + math.pow(hourly.windspeed_northward[index], 2)
                 )
+            if hourly.surface_pressure is not None:
+                forecast[ATTR_FORECAST_PRESSURE] = hourly.surface_pressure[index] / 100
+
             forecasts.append(forecast)
 
         return forecasts
