@@ -83,8 +83,6 @@ class GeoSphereAustriaPrediction:
             await self.session.close()
 
         if json_contents:
-            with open("forecast.json", "wt") as of:
-                json.dump(json_contents, of)
             response.close()
             predictions = json_contents["features"][0]["properties"]["parameters"]
             timestamps = [
