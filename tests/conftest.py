@@ -18,8 +18,6 @@ from custom_components.geosphere_austria_prediction.models import Forecast
 # from syrupy.assertion import SnapshotAssertion
 
 
-
-
 # @pytest.fixture
 # def snapshot(snapshot: SnapshotAssertion) -> SnapshotAssertion:
 #     """Return snapshot assertion fixture with the Home Assistant extension."""
