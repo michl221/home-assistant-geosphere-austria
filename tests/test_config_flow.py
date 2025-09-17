@@ -1,17 +1,17 @@
 """Test the GeoSphere Austria Prediction config flow."""
 
-from unittest.mock import MagicMock
-
-from homeassistant import config_entries
-from homeassistant.components.geosphere_austria_prediction.const import DOMAIN
+import pytest
 from homeassistant.components.zone import ENTITY_ID_HOME
 from homeassistant.config_entries import SOURCE_USER
 from homeassistant.const import CONF_ZONE
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResultType
 
+from custom_components.geosphere_austria_prediction.const import DOMAIN
 
-async def test_full_user_flow(hass: HomeAssistant, mock_setup_entry: MagicMock) -> None:
+
+@pytest.mark.asyncio
+async def test_full_user_flow(hass: HomeAssistant) -> None:
     """Test the full user configuration flow."""
     result = await hass.config_entries.flow.async_init(
         DOMAIN, context={"source": SOURCE_USER}

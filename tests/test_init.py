@@ -2,17 +2,15 @@
 
 from unittest.mock import AsyncMock, MagicMock, patch
 
-from homeassistant.components.geosphere_austria_prediction.geosphere_austria import (
-    GeoSphereAustriaConnectionError,
-)
 import pytest
-
-from homeassistant.components.geosphere_austria_prediction.const import DOMAIN
 from homeassistant.config_entries import ConfigEntryState
 from homeassistant.const import CONF_ZONE
 from homeassistant.core import HomeAssistant
+from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from tests.common import MockConfigEntry
+from custom_components.geosphere_austria_prediction.const import DOMAIN
+from custom_components.geosphere_austria_prediction.geosphere_austria import \
+    GeoSphereAustriaConnectionError
 
 
 async def test_load_unload_config_entry(
@@ -35,7 +33,7 @@ async def test_load_unload_config_entry(
 
 
 @patch(
-    "homeassistant.components.geosphere_austria_prediction.coordinator.GeoSphereAustriaPrediction.query_geosphere_austria",
+    "custom_components.geosphere_austria_prediction.coordinator.GeoSphereAustriaPrediction.query_geosphere_austria",
     side_effect=GeoSphereAustriaConnectionError,
 )
 async def test_config_entry_not_ready(

@@ -3,16 +3,12 @@
 from unittest.mock import AsyncMock
 
 import pytest
-from syrupy.assertion import SnapshotAssertion
-
-from homeassistant.components.weather import (
-    DOMAIN as WEATHER_DOMAIN,
-    SERVICE_GET_FORECASTS,
-)
+from homeassistant.components.weather import DOMAIN as WEATHER_DOMAIN
+from homeassistant.components.weather import SERVICE_GET_FORECASTS
 from homeassistant.const import ATTR_ENTITY_ID
 from homeassistant.core import HomeAssistant
-
-from tests.common import MockConfigEntry
+from pytest_homeassistant_custom_component.common import MockConfigEntry
+from syrupy.assertion import SnapshotAssertion
 
 
 @pytest.mark.freeze_time("2025-09-15T15:00:00Z")
