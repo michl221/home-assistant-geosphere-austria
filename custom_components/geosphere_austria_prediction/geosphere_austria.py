@@ -3,8 +3,8 @@
 import asyncio
 from dataclasses import dataclass
 import datetime
-import socket
 import json
+import socket
 
 import aiohttp
 from aiohttp.client import ClientError, ClientResponseError, ClientSession
@@ -65,7 +65,6 @@ class GeoSphereAustriaPrediction:
             self._close_session = True
 
         try:
-            LOGGER.info(f"GeoSphereAustriaPrediction {nwp_forecast_params}")
             async with asyncio.timeout(delay=None):
                 response = await self.session.get(
                     url=nwp_api_url, params=nwp_forecast_params
@@ -74,10 +73,9 @@ class GeoSphereAustriaPrediction:
             msg = "Timeout while requesting forecast from GeoSphere Austria"
             raise GeoSphereAustriaConnectionError(msg) from exception
         except (ClientError, ClientResponseError, socket.gaierror) as exception:
-            msg = "Error occured while communicating with GeoSphere Austria API"
+            msg = "Error occurred while communicating with GeoSphere Austria API"
             raise GeoSphereAustriaConnectionError(msg) from exception
 
-        LOGGER.info(f"GeoSphereAustriaPrediction {response.status}")
         if response.status in (200, 301):
             json_contents = await response.json()
 
@@ -89,7 +87,6 @@ class GeoSphereAustriaPrediction:
                 json.dump(json_contents, of)
             response.close()
             predictions = json_contents["features"][0]["properties"]["parameters"]
-            LOGGER.info(f"{json_contents['timestamps']}")
             timestamps = [
                 datetime.datetime.strptime(x, "%Y-%m-%dT%H:%M%z")
                 for x in json_contents["timestamps"]
@@ -112,7 +109,7 @@ class GeoSphereAustriaPrediction:
             v10m = predictions["v10m"]["data"]
             vgust = predictions["vgust"]["data"]
 
-            data = Forecast(
+            return Forecast(
                 timestamps=timestamps,
                 global_radiation=grad,
                 minimum_temperature=mnt2m,
@@ -132,10 +129,6 @@ class GeoSphereAustriaPrediction:
                 ugust=ugust,
                 vgust=vgust,
             )
-            LOGGER.info(f"Forecast {data}")
-            with open("forecast_model.json", "wt") as of:
-                of.write(data.model_dump_json())
-            return data
         return None
 
 

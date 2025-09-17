@@ -47,9 +47,6 @@ class GeoSphereAustriaPredictionUpdateCoordinator(DataUpdateCoordinator[Forecast
             latitude = zone.attributes[ATTR_LATITUDE]
             longitude = zone.attributes[ATTR_LONGITUDE]
             start = datetime.now(tz=UTC)
-            LOGGER.info(
-                f"GeoSphereAustriaPredictionUpdateCoordinator: {latitude} {longitude} {start}"
-            )
             return await self.geosphere_austria_prediction.query_geosphere_austria(
                 latitude, longitude, start
             )

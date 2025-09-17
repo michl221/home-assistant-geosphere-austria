@@ -2,21 +2,29 @@
 
 from __future__ import annotations
 
-import math
 from datetime import datetime, time
+import math
 
 from homeassistant.components.weather import (
-    ATTR_FORECAST_CONDITION, ATTR_FORECAST_NATIVE_PRECIPITATION,
-    ATTR_FORECAST_NATIVE_TEMP, ATTR_FORECAST_NATIVE_TEMP_LOW,
-    ATTR_FORECAST_NATIVE_WIND_SPEED, ATTR_FORECAST_PRESSURE,
-    ATTR_FORECAST_WIND_BEARING, Forecast, SingleCoordinatorWeatherEntity,
-    WeatherEntityFeature)
-from homeassistant.const import (UnitOfPrecipitationDepth, UnitOfPressure,
-                                 UnitOfSpeed, UnitOfTemperature)
+    ATTR_FORECAST_CONDITION,
+    ATTR_FORECAST_NATIVE_PRECIPITATION,
+    ATTR_FORECAST_NATIVE_TEMP,
+    ATTR_FORECAST_NATIVE_TEMP_LOW,
+    ATTR_FORECAST_NATIVE_WIND_SPEED,
+    ATTR_FORECAST_PRESSURE,
+    Forecast,
+    SingleCoordinatorWeatherEntity,
+    WeatherEntityFeature,
+)
+from homeassistant.const import (
+    UnitOfPrecipitationDepth,
+    UnitOfPressure,
+    UnitOfSpeed,
+    UnitOfTemperature,
+)
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
-from homeassistant.helpers.entity_platform import \
-    AddConfigEntryEntitiesCallback
+from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.util import dt as dt_util
 
@@ -120,7 +128,6 @@ class GeoSphereAustriaPredictionWeatherEntity(
         today = dt_util.utcnow()
 
         hourly = self.coordinator.data
-        LOGGER.info(f"coordinator.data {hourly}")
         for index, _datetime in enumerate(hourly.timestamps):
             if _datetime.tzinfo is None:
                 _datetime = _datetime.replace(tzinfo=dt_util.UTC)
@@ -134,9 +141,6 @@ class GeoSphereAustriaPredictionWeatherEntity(
             if hourly.temperature is not None:
                 forecast[ATTR_FORECAST_NATIVE_TEMP] = hourly.temperature[index]
             if hourly.symbol is not None:
-                LOGGER.info(
-                    f"Symbol: {hourly.symbol[index]}, {GSA_TO_HA_CONDITION_MAP[hourly.symbol[index]]}"
-                )
                 forecast[ATTR_FORECAST_CONDITION] = GSA_TO_HA_CONDITION_MAP.get(
                     hourly.symbol[index]
                 )
