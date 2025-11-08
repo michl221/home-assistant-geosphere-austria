@@ -1,4 +1,4 @@
-pydantic==2.11.9
+pydantic==2.11
 
 coverage
 pytest
